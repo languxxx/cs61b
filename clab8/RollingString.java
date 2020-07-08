@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 /**
  * A String-like class that allows users to add and remove characters in the String
  * in constant time and have a constant-time hash function. Used for the Rabin-Karp
@@ -17,13 +19,25 @@ class RollingString{
      */
     static final int PRIMEBASE = 6113;
 
+    int hcode, L;
+    LinkedList<Integer> string;
+
     /**
      * Initializes a RollingString with a current value of String s.
      * s must be the same length as the maximum length.
      */
     public RollingString(String s, int length) {
         assert(s.length() == length);
-        /* FIX ME */
+        L = length;
+        hcode = 0;
+        string = new LinkedList<>();
+
+        int c;
+        for (int i = 0; i < L; i++) {
+            c = (int) s.charAt(i);
+            string.add(c);
+            hcode = hcode * UNIQUECHARS + c;
+        }
     }
 
     /**
@@ -32,7 +46,13 @@ class RollingString{
      * Should be a constant-time operation.
      */
     public void addChar(char c) {
-        /* FIX ME */
+        int oldChar, newChar;
+
+        oldChar = string.poll();
+        newChar = (int) c;
+        string.add(newChar);
+
+        hcode = (hcode - oldChar * (int)Math.pow(UNIQUECHARS,L-1)) * UNIQUECHARS + newChar;
     }
 
 
@@ -43,8 +63,10 @@ class RollingString{
      */
     public String toString() {
         StringBuilder strb = new StringBuilder();
-        /* FIX ME */
-        return "";
+        for (int c : string) {
+            strb.append((char) c);
+        }
+        return strb.toString();
     }
 
     /**
@@ -52,8 +74,7 @@ class RollingString{
      * Should be a constant-time operation.
      */
     public int length() {
-        /* FIX ME */
-        return -1;
+        return L;
     }
 
 
@@ -64,8 +85,12 @@ class RollingString{
      */
     @Override
     public boolean equals(Object o) {
-        /* FIX ME */
-        return false;
+        if (o.getClass() != this.getClass())
+            return false;
+
+        RollingString obj = (RollingString) o;
+
+        return this.toString().equals(obj.toString());
     }
 
     /**
@@ -74,7 +99,6 @@ class RollingString{
      */
     @Override
     public int hashCode() {
-        /* FIX ME */
-        return -1;
+        return hcode % PRIMEBASE;
     }
 }
