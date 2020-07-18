@@ -83,8 +83,9 @@ public class KDTreeTest {
         end = System.currentTimeMillis();
         System.out.print((end - start)/1000.0 +  " seconds.\n");
     }
+    
     public static void main(String[] args) {
         //jh61b.junit.textui.runClasses(KDTreeTest.class);
-        testRuntime(10000, 10000);
+        testRuntime(100000, 10000);
     }
 }

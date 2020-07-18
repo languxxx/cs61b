@@ -9,7 +9,7 @@ public class KDTree implements PointSet {
 
         Point p;
         Node left, right;
-        boolean compFlag;
+        boolean compFlag; // ture for comparing X, false for comparing Y
 
         public Node(Point point, boolean flag) {
             p = point;
@@ -69,10 +69,10 @@ public class KDTree implements PointSet {
 
         public double edgeDistance(Point n) {
             if (compFlag) {
-                return Math.abs(getX() - n.getX());
+                return Math.pow(getX() - n.getX(), 2);
             }
             else {
-                return Math.abs(getY() - n.getY());
+                return Math.pow(getY() - n.getY(), 2);
             }
         }
     }
@@ -93,7 +93,7 @@ public class KDTree implements PointSet {
 
     private void addPoint(Node parent, Point p) {
 
-        if (parent.compareTo(p) >= 0) {
+        if (parent.compareTo(p) > 0) {
             if (parent.getLeft() != null) {
                 addPoint(parent.getLeft(), p);
             }
@@ -136,7 +136,7 @@ public class KDTree implements PointSet {
         }
 
         Node goodSide, badSide;
-        if (n.compareTo(goal) >= 0) {
+        if (n.compareTo(goal) > 0) {
             goodSide = n.getLeft();
             badSide = n.getRight();
         }
